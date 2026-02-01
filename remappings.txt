@@ -1,0 +1,8 @@
+forge-std/=lib/forge-std/src/
+v3-core/=lib/v3-core/
+v3-periphery/=lib/v3-periphery/
+@uniswap/v3-core/=lib/v3-core/
+@uniswap/v3-periphery/=lib/v3-periphery/
+@openzeppelin/=lib/openzeppelin-contracts/
+@uniswap/view-quoter-v3/=lib/view-quoter-v3/
+@aerodrome-finance/slipstream/=lib/slipstream/

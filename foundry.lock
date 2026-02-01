@@ -1,0 +1,38 @@
+{
+  "lib/abdk-libraries-solidity": {
+    "rev": "5e1e7c11b35f8313d3f7ce11c1b86320d7c0b554"
+  },
+  "lib/forge-std": {
+    "tag": {
+      "name": "v1.12.0",
+      "rev": "7117c90c8cf6c68e5acce4f09a6b24715cea4de6"
+    }
+  },
+  "lib/openzeppelin-contracts": {
+    "tag": {
+      "name": "v5.5.0",
+      "rev": "fcbae5394ae8ad52d8e580a3477db99814b9d565"
+    }
+  },
+  "lib/slipstream": {
+    "tag": {
+      "name": "v1.0.0",
+      "rev": "37eead2c7e5302a204dec78bfa0775bbb8ff48a2"
+    }
+  },
+  "lib/v3-core": {
+    "tag": {
+      "name": "v1.0.0",
+      "rev": "e3589b192d0be27e100cd0daaf6c97204fdb1899"
+    }
+  },
+  "lib/v3-periphery": {
+    "tag": {
+      "name": "v1.3.0",
+      "rev": "80f26c86c57b8a5e4b913f42844d4c8bd274d058"
+    }
+  },
+  "lib/view-quoter-v3": {
+    "rev": "d718d2f40a1ac6d8f152560c2da3853aa92e7898"
+  }
+}
