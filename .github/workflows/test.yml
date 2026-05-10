@@ -36,3 +36,4 @@ jobs:
 
       - name: Run Forge tests
         run: forge test -vvv
+        if: false  # tests fork Base mainnet and require BASE_RPC_URL — run locally only
