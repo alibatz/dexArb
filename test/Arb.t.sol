@@ -1,4 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
+// End-to-end arbitrage test. Moves the WETH/Virtual price with a whale swap to engineer a
+// detectable opportunity, then runs searcher.run() to verify the arb executes and emits
+// OptimalInputFound with a non-zero profit.
 pragma solidity ^0.8.26;
 
 import { Test } from "forge-std/Test.sol";

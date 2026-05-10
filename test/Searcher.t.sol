@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: UNLICENSED
+// Minimal deployment test — verifies Searcher can be deployed and initialized correctly.
 pragma solidity ^0.8.26;
 
 import { Test } from "forge-std/Test.sol";

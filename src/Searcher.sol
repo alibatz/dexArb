@@ -1,4 +1,10 @@
 // SPDX-License-Identifier: UNLICENSED
+// Main on-chain arbitrage executor. Hardcodes a triangle of pools (WETH → Virtual → USDC → WETH
+// on Uniswap V3 / Aerodrome CL). run() iterates triangles, picks the best pool at each leg via
+// buildPath(), and checks both directions. findOptimalSizeMemory() uses a golden section search
+// (20 iterations) over [0, 5 ETH] to maximize profit. If profitable, initiates a flash swap on
+// the first pool; the route completes in uniswapV3SwapCallback() → runRoute(), with profit swept
+// to OWNER at the end.
 
 pragma solidity ^0.8.26;
 

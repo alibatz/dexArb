@@ -1,4 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
+// View library that re-implements the Uniswap V3 swap simulation loop locally, avoiding external
+// quoter calls. Uses low-level staticcall for slot0() and ticks() to handle both Uniswap V3
+// (7-value slot0) and Aerodrome CL (6-value slot0) pool interfaces. Written in ^0.7.6 to import
+// Uniswap V3 core math libraries directly.
 pragma solidity ^0.7.6;
 pragma abicoder v2;
 

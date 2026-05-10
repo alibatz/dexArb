@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
+// Unit tests for the 64.64 fixed-point price calculations across the 3-pool triangle.
 pragma solidity ^0.8.26;
 
 import { Test } from "forge-std/Test.sol";

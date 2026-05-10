@@ -5,7 +5,8 @@ libs = ["lib"]
 auto_detect_solc = true
 offline = false
 use_literal_content = false
-
+[rpc_endpoints]
+base = "${BASE_RPC_URL}"
 
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
