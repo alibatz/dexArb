@@ -45,24 +45,20 @@ library QuoterMath {
     function fillSlot0(IUniswapV3Pool pool) private view returns (Slot0 memory slot0) {
         // Use low-level call to handle different return value counts
         // Uniswap V3: 7 return values, Aerodrome CL: 6 return values
-        (bool success, bytes memory data) = address(pool).staticcall(
-            abi.encodeWithSignature("slot0()")
-        );
+        (bool success, bytes memory data) = address(pool).staticcall(abi.encodeWithSignature("slot0()"));
         require(success, "slot0 call failed");
-        
+
         assembly {
             // sqrtPriceX96 is at offset 32 (first return value)
             mstore(slot0, mload(add(data, 32)))
             // tick is at offset 64 (second return value)
             mstore(add(slot0, 32), mload(add(data, 64)))
         }
-        
+
         // tickSpacing is a separate call
-        (success, data) = address(pool).staticcall(
-            abi.encodeWithSignature("tickSpacing()")
-        );
+        (success, data) = address(pool).staticcall(abi.encodeWithSignature("tickSpacing()"));
         require(success, "tickSpacing call failed");
-        
+
         assembly {
             mstore(add(slot0, 64), mload(add(data, 32)))
         }
@@ -171,11 +167,11 @@ library QuoterMath {
             // compute values to swap to the target tick, price limit, or point where input/output amount is exhausted
             (state.sqrtPriceX96, step.amountIn, step.amountOut, step.feeAmount) = SwapMath.computeSwapStep(
                 state.sqrtPriceX96,
-                (
-                    quoteParams.zeroForOne
+                (quoteParams.zeroForOne
                         ? step.sqrtPriceNextX96 < quoteParams.sqrtPriceLimitX96
-                        : step.sqrtPriceNextX96 > quoteParams.sqrtPriceLimitX96
-                ) ? quoteParams.sqrtPriceLimitX96 : step.sqrtPriceNextX96,
+                        : step.sqrtPriceNextX96 > quoteParams.sqrtPriceLimitX96)
+                    ? quoteParams.sqrtPriceLimitX96
+                    : step.sqrtPriceNextX96,
                 state.liquidity,
                 state.amountSpecifiedRemaining,
                 quoteParams.fee
@@ -196,11 +192,10 @@ library QuoterMath {
                     // Use low-level call to handle different return value counts
                     // Uniswap V3: 8 return values, Aerodrome CL: 10 return values
                     // liquidityNet is the 2nd return value (offset 32) in both
-                    (bool success, bytes memory data) = address(pool).staticcall(
-                        abi.encodeWithSignature("ticks(int24)", step.tickNext)
-                    );
+                    (bool success, bytes memory data) =
+                        address(pool).staticcall(abi.encodeWithSignature("ticks(int24)", step.tickNext));
                     require(success, "ticks call failed");
-                    
+
                     int128 liquidityNet;
                     assembly {
                         // data layout: [length (32 bytes)][liquidityGross (32 bytes)][liquidityNet (32 bytes)]...

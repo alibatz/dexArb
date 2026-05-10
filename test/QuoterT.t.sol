@@ -3,12 +3,12 @@
 // Also defines the IQuoterMathWrapper interface imported by Arb.t.sol.
 pragma solidity ^0.8.26;
 
-import { Test } from "forge-std/Test.sol";
-import { console } from "forge-std/console.sol";
-import { IQuoter } from "../src/upgrades/IQuoter.sol";
-import { IUniswapV3Pool } from "@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol";
-import { IQuoterV2 as IAeroQuoter } from "@aerodrome-finance/slipstream/contracts/periphery/interfaces/IQuoterV2.sol";
-import { ICLPool as IAeroPool } from "@aerodrome-finance/slipstream/contracts/core/interfaces/ICLPool.sol";
+import {Test} from "forge-std/Test.sol";
+import {console} from "forge-std/console.sol";
+import {IQuoter} from "../src/upgrades/IQuoter.sol";
+import {IUniswapV3Pool} from "@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol";
+import {IQuoterV2 as IAeroQuoter} from "@aerodrome-finance/slipstream/contracts/periphery/interfaces/IQuoterV2.sol";
+import {ICLPool as IAeroPool} from "@aerodrome-finance/slipstream/contracts/core/interfaces/ICLPool.sol";
 //import { }
 
 interface IQuoterMathWrapper {
@@ -19,10 +19,10 @@ interface IQuoterMathWrapper {
         uint160 sqrtPriceLimitX96;
     }
 
-    function quote(IUniswapV3Pool pool, int256 amount, QuoteParams memory params) 
-    external
-    view
-    returns (int256 amount0, int256 amount1, uint160 sqrtPriceAfterX96, uint32 initializedTicksCrossed);
+    function quote(IUniswapV3Pool pool, int256 amount, QuoteParams memory params)
+        external
+        view
+        returns (int256 amount0, int256 amount1, uint160 sqrtPriceAfterX96, uint32 initializedTicksCrossed);
 }
 
 contract QuoterTest is Test {
@@ -33,10 +33,8 @@ contract QuoterTest is Test {
     function setUp() public {
         quoter = IQuoter(0x222cA98F00eD15B1faE10B61c277703a194cf5d2);
         aeroQuoter = IAeroQuoter(0x254cF9E1E6e233aa1AC962CB9B05b2cfeAaE15b0);
-        bytes memory bytecode = vm.getCode(
-            "out/QuoterMathWrapper.sol/QuoterMathWrapper.json"
-        );
-        
+        bytes memory bytecode = vm.getCode("out/QuoterMathWrapper.sol/QuoterMathWrapper.json");
+
         address addr;
         assembly {
             addr := create(0, add(bytecode, 0x20), mload(bytecode))
@@ -55,7 +53,7 @@ contract QuoterTest is Test {
             sqrtPriceLimitX96: 4295128740
         });
 
-        (uint256 amountOut, , , ) = quoter.quoteExactInputSingleWithPool(params);
+        (uint256 amountOut,,,) = quoter.quoteExactInputSingleWithPool(params);
         console.log("Amount out:", amountOut);
     }
 
@@ -71,17 +69,15 @@ contract QuoterTest is Test {
             sqrtPriceLimitX96: 4295128740
         });
 
-        (uint256 amountOut, , , ) = aeroQuoter.quoteExactInputSingle(params);
+        (uint256 amountOut,,,) = aeroQuoter.quoteExactInputSingle(params);
 
         console.log("Aero Amount out (cold): ", amountOut);
 
-
         console.log("Aero Gas used (cold): ", gasStart - gasleft());
-
 
         gasStart = gasleft();
 
-        (amountOut, , , ) = aeroQuoter.quoteExactInputSingle(params);
+        (amountOut,,,) = aeroQuoter.quoteExactInputSingle(params);
         console.log("Aero Amount out (warm): ", amountOut);
         console.log("Aero Gas used (warm): ", gasStart - gasleft());
     }
@@ -91,13 +87,10 @@ contract QuoterTest is Test {
         IUniswapV3Pool pool = IUniswapV3Pool(0xd0b53D9277642d899DF5C87A3966A349A798F224);
 
         IQuoterMathWrapper.QuoteParams memory params = IQuoterMathWrapper.QuoteParams({
-            zeroForOne: true,
-            exactInput: true,
-            fee: 500,
-            sqrtPriceLimitX96: 4295128740
+            zeroForOne: true, exactInput: true, fee: 500, sqrtPriceLimitX96: 4295128740
         });
 
-        (int256 amount0, int256 amount1, uint160 sqrtPriceAfterX96, uint32 initializedTicksCrossed) = 
+        (int256 amount0, int256 amount1, uint160 sqrtPriceAfterX96, uint32 initializedTicksCrossed) =
             wrapper.quote(pool, 1e18, params);
 
         console.log("Uni Amount0 out (cold): ", amount0);
@@ -106,8 +99,7 @@ contract QuoterTest is Test {
 
         gasStart = gasleft();
 
-        (amount0, amount1, sqrtPriceAfterX96, initializedTicksCrossed) = 
-            wrapper.quote(pool, 1e18, params);
+        (amount0, amount1, sqrtPriceAfterX96, initializedTicksCrossed) = wrapper.quote(pool, 1e18, params);
         console.log("Uni Amount0 out (warm): ", amount0);
         console.log("Uni Amount1 out (warm): ", amount1);
         console.log("Uni Gas used (warm): ", gasStart - gasleft());
@@ -117,13 +109,10 @@ contract QuoterTest is Test {
         uint256 gasStart = gasleft();
         IUniswapV3Pool pool = IUniswapV3Pool(0xb2cc224c1c9feE385f8ad6a55b4d94E92359DC59); // this is a Aero CL pool
         IQuoterMathWrapper.QuoteParams memory params = IQuoterMathWrapper.QuoteParams({
-            zeroForOne: true,
-            exactInput: true,
-            fee: 500,
-            sqrtPriceLimitX96: 4295128740
+            zeroForOne: true, exactInput: true, fee: 500, sqrtPriceLimitX96: 4295128740
         });
 
-        (int256 amount0, int256 amount1, uint160 sqrtPriceAfterX96, uint32 initializedTicksCrossed) = 
+        (int256 amount0, int256 amount1, uint160 sqrtPriceAfterX96, uint32 initializedTicksCrossed) =
             wrapper.quote(pool, 1e18, params);
         console.log("Aero Amount0 out (cold): ", amount0);
         console.log("Aero Amount1 out (cold): ", amount1);
@@ -131,8 +120,7 @@ contract QuoterTest is Test {
 
         gasStart = gasleft();
 
-        (amount0, amount1, sqrtPriceAfterX96, initializedTicksCrossed) = 
-            wrapper.quote(pool, 1e18, params);
+        (amount0, amount1, sqrtPriceAfterX96, initializedTicksCrossed) = wrapper.quote(pool, 1e18, params);
         console.log("Aero Amount0 out (warm): ", amount0);
         console.log("Aero Amount1 out (warm): ", amount1);
         console.log("Aero Gas used (warm): ", gasStart - gasleft());
