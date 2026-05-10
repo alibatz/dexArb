@@ -10,7 +10,6 @@ pragma solidity ^0.8.26;
 
 import {IUniswapV3Pool} from "@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import {PoolAddress} from "@uniswap/v3-periphery/contracts/libraries/PoolAddress.sol";
 import {IUniswapV3SwapCallback} from "@uniswap/v3-core/contracts/interfaces/callback/IUniswapV3SwapCallback.sol";
 import {ABDKMath64x64 as math} from "./ABDKMath/ABDKMath64x64.sol";
 import {IQuoter} from "./upgrades/IQuoter.sol";
